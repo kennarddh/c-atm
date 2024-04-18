@@ -280,6 +280,13 @@ int main(void)
                                 break;
                             }
 
+                            if (!targetUser->active)
+                            {
+                                printf("Cannot transfer to deactivated user.\n");
+
+                                break;
+                            }
+
                             user->balance -= transferAmount;
                             targetUser->balance += transferAmount;
 
