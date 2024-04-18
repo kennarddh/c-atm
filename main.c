@@ -18,17 +18,20 @@ int userIDCounter = 0;
 
 User users[MAX_USER] = {};
 
-void createUser(char* name, const int pin, const double initialBalance = 0)
+int createUser(char* name, int pin, double initialBalance)
 {
-    const int newUserID = ++userIndexCounter;
+    int index = ++userIndexCounter;
+    int userID = ++userIDCounter;
 
-    users[newUserID] = {};
+    // users[newUserID] = {};
 
-    users[newUserID].id = ++userIDCounter;
-    users[newUserID].name = name;
-    users[newUserID].pin = pin;
-    users[newUserID].balance = initialBalance;
-    users[newUserID].active = true;
+    users[index].id = userID;
+    users[index].name = name;
+    users[index].pin = pin;
+    users[index].balance = initialBalance;
+    users[index].active = true;
+
+    return userID;
 }
 
 void clearScreen()
@@ -66,7 +69,7 @@ int chooseMenu(char menus[10][20])
         }
         else
         {
-            return choosedMenu;
+            return choosedMenu - 1;
         }
     }
 }
@@ -79,25 +82,131 @@ int main(void)
     while (1)
     {
         char menus[10][20] = {"Register", "Login"};
-        const int menuChoice = chooseMenu(menus);
+        int menuChoice = chooseMenu(menus);
 
         clearScreen();
 
         switch (menuChoice)
         {
+        case 0:
+            {
+                printf("Register\n");
+                char* name;
+                int pin, initialBalance;
+
+                printf("Name:");
+                scanf("%s", &name);
+                printf("Pin:");
+                scanf("%d", &pin);
+                printf("Initial balance:");
+                scanf("%d", &initialBalance);
+
+                int userID = createUser(&name, pin, initialBalance);
+
+                printf("User %s created.\nUser id: %d\n", &name, userID);
+
+                break;
+            }
         case 1:
-            printf("Register\n");
-            char* name;
-            int pin;
+            {
+                printf("Login\n");
 
-            printf("Name:");
-            scanf("%s", &name);
-            printf("Pin:");
-            scanf("%d", &pin);
+                int userID, pin;
 
-            break;
-        case 2:
-            printf("Login\n");
+                printf("ID:");
+                scanf("%d", &userID);
+                printf("Pin:");
+                scanf("%d", &pin);
+
+                int foundUserIndex = -1;
+
+                for (int i = 0; i < userIndexCounter + 1; ++i)
+                {
+                    User user = users[i];
+
+                    if (userID == user.id)
+                    {
+                        foundUserIndex = i;
+                    }
+                }
+
+                if (foundUserIndex == -1)
+                {
+                    printf("User with id %d not found\n", userID);
+
+                    break;
+                }
+
+                User user = users[foundUserIndex];
+
+                if (user.pin != pin)
+                {
+                    printf("Wrong pin\n");
+
+                    break;
+                }
+
+                clearScreen();
+
+                printf("Logged in as %s.\n", user.name);
+
+                while (1)
+                {
+                    char loggedInMenus[10][20] = {"Check Balance", "Logout", "Change Pin"};
+                    int loggedInMenuChoice = chooseMenu(loggedInMenus);
+
+                    switch (loggedInMenuChoice)
+                    {
+                    case 0:
+                        {
+                            printf("Your balance is %f\n", user.balance);
+
+                            break;
+                        }
+                    case 1:
+                        {
+                            printf("Logged out.\n");
+
+                            goto logout;
+                        }
+                    }
+                case 2:
+                    {
+                            // Wrong here. Always go here.
+                        printf("Change pin.\n");
+
+                        int currentPin, newPin;
+
+                        printf("Current Pin:");
+                        scanf("%d", &currentPin);
+                        printf("New Pin:");
+                        scanf("%d", &newPin);
+
+                        if (user.pin != currentPin)
+                        {
+                            printf("Wrong current pin.\n");
+
+                            break;
+                        }
+
+                        if (user.pin != newPin)
+                        {
+                            printf("New pin cannot be same as current pin.\n");
+
+                            break;
+                        }
+
+                        user.pin = pin;
+
+                        printf("Pin changed.\n");
+
+                        goto logout;
+                    }
+                }
+            }
         }
+
+    logout:
+        void;
     }
 }
