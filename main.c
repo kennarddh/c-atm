@@ -273,6 +273,13 @@ int main(void)
 
                             User* targetUser = &users[foundUserIndex2];
 
+                            if (targetUser == user)
+                            {
+                                printf("Cannot transfer to yourself.\n");
+
+                                break;
+                            }
+
                             user->balance -= transferAmount;
                             targetUser->balance += transferAmount;
 
