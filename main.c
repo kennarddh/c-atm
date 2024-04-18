@@ -197,6 +197,7 @@ int main(void)
                         "Transfer",
                         "Withdraw",
                         "Deposit",
+                        "Deactivate User"
                     };
                     int loggedInMenuChoice = chooseMenu(loggedInMenus);
 
@@ -355,6 +356,28 @@ int main(void)
 
                             break;
                         }
+                    case 6:
+                        {
+                            printf("Deactivate User.\n");
+
+                            bool isPinCorrect = tryAskForPin(user);
+
+                            if (!isPinCorrect)
+                                goto logout;
+
+                            if (user->balance > 0)
+                            {
+                                printf("Cannot deactivate user with balance greater than 0.\n");
+
+                                break;
+                            }
+
+                            user->active = false;
+
+                            printf("Succesfully deactivated user.\n");
+
+                            goto logout;
+                        }
                     }
                 }
 
@@ -398,7 +421,6 @@ int main(void)
                     targetUser->active = true;
 
                     printf("Successfully activated user with the id %d.\n", targetUserID);
-
 
                     break;
                 }
