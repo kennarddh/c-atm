@@ -235,11 +235,10 @@ int main(void)
                             if (!isPinCorrect)
                                 goto logout;
 
-
-                            int transferAmount;
+                            double transferAmount;
 
                             printf("Transfer Amount:");
-                            scanf("%d", &transferAmount);
+                            scanf("%lf", &transferAmount);
 
                             if (transferAmount > user->balance)
                             {
@@ -272,12 +271,13 @@ int main(void)
                                 break;
                             }
 
-                            User* targetUser = &users[foundUserIndex];
+                            User* targetUser = &users[foundUserIndex2];
 
                             user->balance -= transferAmount;
                             targetUser->balance += transferAmount;
 
-                            printf("Succesfully transfered %d to user with the id %d.\n", transferAmount, targetUserID);
+                            printf("Succesfully transfered %lf to user with the id %d.\n", transferAmount,
+                                   targetUserID);
 
                             break;
                         }
