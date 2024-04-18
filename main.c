@@ -190,7 +190,14 @@ int main(void)
 
                 while (1)
                 {
-                    char loggedInMenus[10][20] = {"Check Balance", "Logout", "Change Pin", "Transfer"};
+                    char loggedInMenus[10][20] = {
+                        "Check Balance",
+                        "Logout",
+                        "Change Pin",
+                        "Transfer",
+                        "Withdraw",
+                        "Deposit",
+                    };
                     int loggedInMenuChoice = chooseMenu(loggedInMenus);
 
                     switch (loggedInMenuChoice)
@@ -232,7 +239,6 @@ int main(void)
                         }
                     case 3:
                         {
-                            // Wrong here. Always go here.
                             printf("Transfer.\n");
 
                             bool isPinCorrect = tryAskForPin(user);
@@ -297,6 +303,55 @@ int main(void)
 
                             printf("Succesfully transfered %lf to user with the id %d.\n", transferAmount,
                                    targetUserID);
+
+                            break;
+                        }
+
+                    case 4:
+                        {
+                            printf("Withdraw.\n");
+
+                            bool isPinCorrect = tryAskForPin(user);
+
+                            if (!isPinCorrect)
+                                goto logout;
+
+                            double amount;
+
+                            printf("Amount:");
+                            scanf("%lf", &amount);
+
+                            if (amount > user->balance)
+                            {
+                                printf("Not enough balance\n");
+
+                                break;
+                            }
+
+                            user->balance -= amount;
+
+                            printf("Succesfully withdrawn %lf.\n", amount);
+
+                            break;
+                        }
+
+                    case 5:
+                        {
+                            printf("Deposit.\n");
+
+                            bool isPinCorrect = tryAskForPin(user);
+
+                            if (!isPinCorrect)
+                                goto logout;
+
+                            double amount;
+
+                            printf("Amount:");
+                            scanf("%lf", &amount);
+
+                            user->balance += amount;
+
+                            printf("Succesfully depostied %lf.\n", amount);
 
                             break;
                         }
