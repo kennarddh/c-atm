@@ -109,8 +109,8 @@ bool tryAskForPin(User* user)
 
 int main(void)
 {
-    createUser("Foo", 123123, 10000);
-    createUser("Bar", 321321, 20000);
+    // createUser("Foo", 123123, 10000);
+    // createUser("Bar", 321321, 20000);
 
     while (1)
     {
