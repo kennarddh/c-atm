@@ -170,9 +170,9 @@ int main(void)
                     break;
                 }
 
-                User user = users[foundUserIndex];
+                User* user = &users[foundUserIndex];
 
-                if (user.pin != pin)
+                if (user->pin != pin)
                 {
                     printf("Wrong pin\n");
 
@@ -181,7 +181,7 @@ int main(void)
 
                 clearScreen();
 
-                printf("Logged in as %s.\n", user.name);
+                printf("Logged in as %s.\n", user->name);
 
                 while (1)
                 {
@@ -191,7 +191,7 @@ int main(void)
                     switch (loggedInMenuChoice)
                     {
                     case 0:
-                        printf("Your balance is %f\n", user.balance);
+                        printf("Your balance is %f\n", user->balance);
 
                         break;
                     case 1:
@@ -202,7 +202,7 @@ int main(void)
                         {
                             printf("Change pin.\n");
 
-                            bool isPinCorrect = tryAskForPin(&user);
+                            bool isPinCorrect = tryAskForPin(user);
 
                             if (!isPinCorrect)
                                 goto logout;
@@ -212,14 +212,14 @@ int main(void)
                             printf("New Pin:");
                             scanf("%d", &newPin);
 
-                            if (user.pin == newPin)
+                            if (user->pin == newPin)
                             {
                                 printf("New pin cannot be same as current pin.\n");
 
                                 break;
                             }
 
-                            user.pin = pin;
+                            user->pin = newPin;
 
                             printf("Pin changed.\n");
 
@@ -230,7 +230,7 @@ int main(void)
                             // Wrong here. Always go here.
                             printf("Transfer.\n");
 
-                            bool isPinCorrect = tryAskForPin(&user);
+                            bool isPinCorrect = tryAskForPin(user);
 
                             if (!isPinCorrect)
                                 goto logout;
@@ -241,7 +241,7 @@ int main(void)
                             printf("Transfer Amount:");
                             scanf("%d", &transferAmount);
 
-                            if (transferAmount > user.balance)
+                            if (transferAmount > user->balance)
                             {
                                 printf("Not enough balance\n");
 
@@ -253,29 +253,29 @@ int main(void)
                             printf("Target User ID:");
                             scanf("%d", &targetUserID);
 
-                            int foundUserIndex = -1;
+                            int foundUserIndex2 = -1;
 
                             for (int i = 0; i < userIndexCounter + 1; ++i)
                             {
-                                User user = users[i];
+                                User* userIter = &users[i];
 
-                                if (targetUserID == user.id)
+                                if (targetUserID == userIter->id)
                                 {
-                                    foundUserIndex = i;
+                                    foundUserIndex2 = i;
                                 }
                             }
 
-                            if (foundUserIndex == -1)
+                            if (foundUserIndex2 == -1)
                             {
                                 printf("Target user with id %d not found\n", targetUserID);
 
                                 break;
                             }
 
-                            User targetUser = users[foundUserIndex];
+                            User* targetUser = &users[foundUserIndex];
 
-                            user.balance -= transferAmount;
-                            targetUser.balance += transferAmount;
+                            user->balance -= transferAmount;
+                            targetUser->balance += transferAmount;
 
                             printf("Succesfully transfered %d to user with the id %d.\n", transferAmount, targetUserID);
 
