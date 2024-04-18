@@ -144,12 +144,10 @@ int main(void)
             {
                 printf("Login\n");
 
-                int userID, pin;
+                int userID;
 
                 printf("ID:");
                 scanf("%d", &userID);
-                printf("Pin:");
-                scanf("%d", &pin);
 
                 int foundUserIndex = -1;
 
@@ -179,10 +177,10 @@ int main(void)
                     break;
                 }
 
-                if (user->pin != pin)
-                {
-                    printf("Wrong pin\n");
+                bool isPinCorrectLogin = tryAskForPin(user);
 
+                if (!isPinCorrectLogin)
+                {
                     break;
                 }
 
