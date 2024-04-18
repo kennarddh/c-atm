@@ -172,6 +172,13 @@ int main(void)
 
                 User* user = &users[foundUserIndex];
 
+                if (!user->active)
+                {
+                    printf("Cannot login to deactivated user.\n");
+
+                    break;
+                }
+
                 if (user->pin != pin)
                 {
                     printf("Wrong pin\n");
