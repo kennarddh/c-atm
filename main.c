@@ -114,7 +114,7 @@ int main(void)
 
     while (1)
     {
-        char menus[10][20] = {"Register", "Login"};
+        char menus[10][20] = {"Register", "Login", "Activate Account"};
         int menuChoice = chooseMenu(menus);
 
         clearScreen();
@@ -302,7 +302,53 @@ int main(void)
                         }
                     }
                 }
+
+            case 2:
+                {
+                    printf("Activate Account\n");
+
+                    int targetUserID;
+
+                    printf("Target User ID:");
+                    scanf("%d", &targetUserID);
+
+                    int foundUserIndex = -1;
+
+                    for (int i = 0; i < userIndexCounter + 1; ++i)
+                    {
+                        User* userIter = &users[i];
+
+                        if (targetUserID == userIter->id)
+                        {
+                            foundUserIndex = i;
+                        }
+                    }
+
+                    if (foundUserIndex == -1)
+                    {
+                        printf("Target user with id %d not found\n", targetUserID);
+
+                        break;
+                    }
+
+                    User* targetUser = &users[foundUserIndex];
+
+                    if (targetUser->active)
+                    {
+                        printf("Target user is already active.\n");
+
+                        break;
+                    }
+
+                    targetUser->active = true;
+
+                    printf("Successfully activated user with the id %d.\n", targetUserID);
+
+
+                    break;
+                }
             }
+
 
         logout:
             void;
