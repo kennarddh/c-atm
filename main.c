@@ -54,6 +54,8 @@ void clearScreen()
 
 void pause()
 {
+    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n");
+
     system("pause");
 }
 
