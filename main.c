@@ -34,9 +34,27 @@ int createUser(char* name, int pin, double initialBalance)
     return userID;
 }
 
+void printHeader()
+{
+    printf("~~~~~~~~~~~~~~~~~~~~~~\n"
+        "~    _  _____ __  __ ~\n"
+        "~   / \\|_   _|  \\/  |~\n"
+        "~  / _ \\ | | | |\\/| |~\n"
+        "~ / ___ \\| | | |  | |~\n"
+        "~/_/   \\_\\_| |_|  |_|~\n"
+        "~~~~~~~~~~~~~~~~~~~~~~\n");
+}
+
 void clearScreen()
 {
     system("cls");
+
+    printHeader();
+}
+
+void pause()
+{
+    system("pause");
 }
 
 int chooseMenu(char menus[10][20])
@@ -107,6 +125,8 @@ bool tryAskForPin(User* user)
     }
 }
 
+bool isFirst = true;
+
 int main(void)
 {
     // createUser("Foo", 123123, 10000);
@@ -114,6 +134,13 @@ int main(void)
 
     while (1)
     {
+        if (!isFirst)
+            pause();
+        else
+            isFirst = false;
+
+        clearScreen();
+
         char menus[10][20] = {"Register", "Login", "Activate Account"};
         int menuChoice = chooseMenu(menus);
 
@@ -188,8 +215,19 @@ int main(void)
 
                 printf("Logged in as %s.\n", user->name);
 
+                pause();
+
+                bool isFirstLogggedInMenu = true;
+
                 while (1)
                 {
+                    if (!isFirstLogggedInMenu)
+                        pause();
+                    else
+                        isFirstLogggedInMenu = false;
+
+                    clearScreen();
+
                     char loggedInMenus[10][20] = {
                         "Check Balance",
                         "Logout",
@@ -200,6 +238,8 @@ int main(void)
                         "Deactivate User"
                     };
                     int loggedInMenuChoice = chooseMenu(loggedInMenus);
+
+                    clearScreen();
 
                     switch (loggedInMenuChoice)
                     {
